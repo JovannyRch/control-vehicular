@@ -1,13 +1,24 @@
 <script setup>
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
-import { Head } from '@inertiajs/vue3';
+import { Head, useForm } from '@inertiajs/vue3';
 
 
 defineProps({ vehiculos: Array });
 
 
+const form = useForm({});
+
+const deleteVehiculo = (id) => {
+    if (confirm("¿Estás seguro de eliminar este vehículo?")) {
+        form.delete(route("vehiculos.destroy", id));
+    }
+};
+
 
 </script>
+
+
+
 
 <template>
 
@@ -26,10 +37,15 @@ defineProps({ vehiculos: Array });
                         <div class="flex items-center justify-between">
                             <h2 class="font-semibold text-xl text-gray-800 leading-tight">Lista de vehículos</h2>
 
-                            <div class="mt-4">
+                            <div class="mt-4 flex items-center gap-2">
                                 <a :href="route('vehiculos.create')"
                                     class="inline-flex items-center px-4 py-2 border border-transparent text-sm leading-5 font-medium rounded-md text-white bg-green-700 hover:bg-green-600 focus:outline-none focus:border-indigo-700 focus:shadow-outline-indigo active:bg-indigo-700 transition ease-in-out duration-150">
                                     Agregar vehículo
+                                </a>
+                                <!-- Download pdf -->
+                                <a :href="route('vehiculos.pdf')"
+                                    class="inline-flex items-center px-4 py-2 border border-transparent text-sm leading-5 font-medium rounded-md text-white bg-blue-700 hover:bg-blue-600 focus:outline-none focus:border-indigo-700 focus:shadow-outline-indigo active:bg-indigo-700 transition ease-in-out duration-150">
+                                    Descargar PDF
                                 </a>
                             </div>
                         </div>
@@ -70,24 +86,23 @@ defineProps({ vehiculos: Array });
                                             </div>
                                         </td>
                                         <td class="px-6 py-4 whitespace-no-wrap">
+                                            <div class="text-sm leading-5 text-gray-900">{{ vehiculo.placa }}</div>
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-no-wrap">
                                             <div class="text-sm leading-5 text-gray-900">{{ vehiculo.tipo }}</div>
                                         </td>
                                         <td class="px-6 py-4 whitespace-no-wrap">
                                             <div class="text-sm leading-5 text-gray-900">{{ vehiculo.modelo }}</div>
                                         </td>
-                                        <td class="px-6 py-4 whitespace-no-wrap">
-                                            <div class="text-sm leading-5 text-gray-900">{{ vehiculo.placa }}</div>
-                                        </td>
+
                                         <td
                                             class="px-6 py-4 whitespace-no-wrap text-right text-sm leading-5 font-medium">
                                             <div class="flex items-center gap-4">
                                                 <a :href="route('vehiculos.edit', vehiculo.id)"
                                                     class="text-indigo-600 hover:text-indigo-900">Editar</a>
 
-                                                <form :action="route('vehiculos.destroy', vehiculo.id)">
-                                                    <button type="submit"
-                                                        class="text-red-600 hover:text-red-900">Eliminar</button>
-                                                </form>
+                                                <button type="submit" @click="deleteVehiculo(vehiculo.id)"
+                                                    class="text-red-600 hover:text-red-900">Eliminar</button>
                                             </div>
 
 

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Vehiculo;
 use Inertia\Inertia;
+use function Spatie\LaravelPdf\Support\pdf;
 
 class VehiculoController extends Controller
 {
@@ -76,6 +77,14 @@ class VehiculoController extends Controller
     public function destroy(Vehiculo $vehiculo)
     {
         $vehiculo->delete();
-        return redirect()->route('vehiculos.index');
+        return redirect()->back();
+    }
+
+    ///vehiculos/pdf
+    public function pdf()
+    {
+        $vehiculos = Vehiculo::all();
+        $today = now()->format('d-m-Y');
+        $pdf = pdf()->view('/vehiculos_list', compact('vehiculos'))->name('vehiculos_list_' . $today . '.pdf')->download();
     }
 }

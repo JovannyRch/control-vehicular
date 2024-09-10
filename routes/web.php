@@ -29,7 +29,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/vehiculos/{vehiculo}', [VehiculoController::class, 'show'])->name('vehiculos.show');
     Route::get('/vehiculos/{vehiculo}/edit', [VehiculoController::class, 'edit'])->name('vehiculos.edit');
     Route::put('/vehiculos/{vehiculo}', [VehiculoController::class, 'update'])->name('vehiculos.update');
-    Route::get('/vehiculo/{vehiculo}/destroy', [VehiculoController::class, 'destroy'])->name('vehiculos.destroy');
+    Route::delete('/vehiculos/{vehiculo}', [VehiculoController::class, 'destroy'])->name('vehiculos.destroy');
+
+    Route::get('/pdf/vehiculos', [VehiculoController::class, 'pdf'])->name('vehiculos.pdf');
 });
 
 
